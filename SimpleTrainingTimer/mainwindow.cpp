@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include <QSound>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,12 +33,16 @@ MainWindow::MainWindow(QWidget *parent) :
              this, SLOT(onUpdateTimerTimeout()) );
     // <<<<< Timers
 
-    mRoundDuration = 5;
-    mPauseDuration = 10;
-    mRelaxDuration = 15;
+    mRoundDuration = 15;
+    mPauseDuration = 5;
+    mRelaxDuration = 10;
+
+    mSignalTime = 10;
 
     mRepetition = 2;
     mCycles = 2;
+
+    ResetTimer();
 }
 
 MainWindow::~MainWindow()
@@ -68,6 +73,9 @@ void MainWindow::on_pushButton_start_pause_clicked()
     {
         mUpdateTimer.start();
         ui->pushButton_start_pause->setText( tr("Pause") );
+        mDownRepetitionResetVal = mDownRepetition;
+
+        QSound::play(":/Sounds/Whistle_high.wav");
     }
 }
 
@@ -84,6 +92,11 @@ QString MainWindow::sec2str( quint32 sec )
 }
 
 void MainWindow::on_pushButton_reset_clicked()
+{
+    ResetTimer();
+}
+
+void MainWindow::ResetTimer()
 {
     ui->lcdNumber_round->display(sec2str(mRoundDuration));
     ui->lcdNumber_pause->display(sec2str(mPauseDuration));
@@ -107,7 +120,13 @@ void MainWindow::onUpdateTimerTimeout()
 {
     mDownTime--;
 
-    qDebug() << Q_FUNC_INFO << tr("Update - DownTime val: %d").arg(mDownTime);
+    if( mDownTime==mSignalTime )
+    {
+        QSound::play(":/Sounds/Signal.wav");
+    }
+
+
+    qDebug() << Q_FUNC_INFO << tr("Update - DownTime val: %1").arg(mDownTime);
 
     switch(mStatus)
     {
@@ -118,12 +137,16 @@ void MainWindow::onUpdateTimerTimeout()
             if( mDownCycles==0 ) // Stop
             {
                 on_pushButton_reset_clicked();
+                QSound::play(":/Sounds/3x_Whistle.wav");
             }
 
             if( mDownRepetition==0 )
             {
                 mDownCycles--;
+
                 mStatus = relax;
+                QSound::play(":/Sounds/Bell.wav");
+
                 mDownTime = mRelaxDuration;
                 ui->lcdNumber_round->display(sec2str(mRoundDuration));
                 ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
@@ -131,7 +154,10 @@ void MainWindow::onUpdateTimerTimeout()
             else
             {
                 mDownRepetition--;
+
                 mStatus = pause;
+                QSound::play(":/Sounds/Whistle.wav");
+
                 mDownTime = mPauseDuration;
                 ui->lcdNumber_round->display(sec2str(mRoundDuration));
                 ui->lcdNumber_pause->display(sec2str(mDownTime));
@@ -148,6 +174,8 @@ void MainWindow::onUpdateTimerTimeout()
         if(mDownTime==0)
         {
             mStatus = round;
+            QSound::play(":/Sounds/Whistle_high.wav");
+
             mDownTime = mRoundDuration;
             ui->lcdNumber_pause->display(sec2str(mPauseDuration));
             ui->lcdNumber_round->display(sec2str(mDownTime));
@@ -162,7 +190,10 @@ void MainWindow::onUpdateTimerTimeout()
     {
         if(mDownTime==0)
         {
-            mStatus = round;  // GESTIRE I CICLI
+            mStatus = round;
+            QSound::play(":/Sounds/Whistle_high.wav");
+            mDownRepetition = mDownRepetitionResetVal;
+
             mDownTime = mRoundDuration;
             ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
             ui->lcdNumber_round->display(sec2str(mDownTime));

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QTime>
+#include <QMediaPlayer>
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,7 @@ protected:
     void changeEvent(QEvent *e);
 
     QString sec2str( quint32 sec );
+    void ResetTimer();
 
 private slots:
     void on_pushButton_start_pause_clicked();
@@ -39,6 +41,7 @@ private:
 
     quint32 mDownTime;
     quint16 mDownRepetition;
+    quint16 mDownRepetitionResetVal;
     quint16 mDownCycles;
 
     quint32 mRoundDuration;
@@ -47,6 +50,8 @@ private:
 
     quint16 mRepetition;
     quint16 mCycles;
+
+    quint16 mSignalTime;
 };
 
 #endif // MAINWINDOW_H

@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Sounds/Signal.wav</file>
+        <file>Sounds/Whistle.wav</file>
+        <file>Sounds/Whistle_high.wav</file>
+        <file>Sounds/3x_Whistle.wav</file>
+        <file>Sounds/Bell.wav</file>
+    </qresource>
+</RCC>
