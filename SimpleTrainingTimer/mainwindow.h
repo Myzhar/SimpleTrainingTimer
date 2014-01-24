@@ -47,6 +47,8 @@ private:
     quint32 mElapsed;
     quint32 mRemaining;
 
+    quint32 mRepetTimer;
+
     quint32 mRoundDuration;
     quint32 mPauseDuration;
     quint32 mRelaxDuration;

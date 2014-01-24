@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QSound>
 #include <QLCDNumber>
+#include "qtimecomposingwidget.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -17,21 +18,21 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lcdNumber_round->display("00:00:00");
     ui->lcdNumber_round->setAutoFillBackground(true);
     pal = ui->lcdNumber_round->palette();
-    pal.setColor( QPalette::Background, QColor( 180,180,230 ));
+    pal.setColor( QPalette::Background, ROUND_COLOR );
     ui->lcdNumber_round->setPalette( pal );
 
     ui->lcdNumber_pause->setDigitCount( 8 );
     ui->lcdNumber_pause->display("00:00:00");
     ui->lcdNumber_pause->setAutoFillBackground(true);
     pal = ui->lcdNumber_pause->palette();
-    pal.setColor( QPalette::Background, QColor( 180,230,180 ));
+    pal.setColor( QPalette::Background,PAUSE_COLOR );
     ui->lcdNumber_pause->setPalette( pal );
 
     ui->lcdNumber_relax->setDigitCount( 8 );
     ui->lcdNumber_relax->display("00:00:00");
     ui->lcdNumber_relax->setAutoFillBackground(true);
     pal = ui->lcdNumber_relax->palette();
-    pal.setColor( QPalette::Background, QColor( 230,180,180 ));
+    pal.setColor( QPalette::Background, RELAX_COLOR );
     ui->lcdNumber_relax->setPalette( pal );
 
     ui->lcdNumber_elapsed->setDigitCount( 8 );
@@ -62,14 +63,29 @@ MainWindow::MainWindow(QWidget *parent) :
              this, SLOT(onUpdateTimerTimeout()) );
     // <<<<< Timers
 
-    mRoundDuration = 30;
-    mPauseDuration = 15;
-    mRelaxDuration = 20;
+    mRoundDuration = 15;
+    mPauseDuration = 3;
+    mRelaxDuration = 6;
 
     mSignalTime = 10;
 
-    mRepetition = 3;
-    mCycles = 2;
+    mRepetition = 5;
+    mCycles = 10;
+
+    ui->widget_time_indicator_dx->setTimingParams( mRoundDuration,
+                                                mPauseDuration,
+                                                mRelaxDuration,
+                                                mRepetition,
+                                                mCycles );
+
+    ui->widget_time_indicator_sx->setTimingParams( mRoundDuration,
+                                                mPauseDuration,
+                                                mRelaxDuration,
+                                                mRepetition,
+                                                mCycles );
+
+    ui->widget_time_indicator_dx->setTimePosition( 0 );
+    ui->widget_time_indicator_sx->setTimePosition( 0 );
 
     ResetTimer();
 }
@@ -140,6 +156,9 @@ void MainWindow::ResetTimer()
     ui->lcdNumber_elapsed->display(sec2str(0));
     ui->lcdNumber_remaining->display(sec2str(mRemaining));
 
+    ui->widget_time_indicator_dx->setTimePosition( mElapsed );
+    ui->widget_time_indicator_sx->setTimePosition( mElapsed );
+
     if( mUpdateTimer.isActive() ) // Pause
     {
         mUpdateTimer.stop();
@@ -157,8 +176,14 @@ void MainWindow::onUpdateTimerTimeout()
     mElapsed++;
     mRemaining--;
 
+    mRepetTimer++;
+
     ui->lcdNumber_elapsed->display(sec2str(mElapsed));
     ui->lcdNumber_remaining->display(sec2str(mRemaining));
+
+    ui->widget_time_indicator_dx->setTimePosition( mRepetTimer );
+    ui->widget_time_indicator_sx->setTimePosition( mRepetTimer );
+
 
     if( mDownTime==mSignalTime )
     {
@@ -242,6 +267,8 @@ void MainWindow::onUpdateTimerTimeout()
             ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
             ui->lcdNumber_round->display(sec2str(mDownTime));
             ui->lcdNumber_repetitions->display(mRepetition);
+
+            mRepetTimer=0;
         }
         else
             ui->lcdNumber_relax->display(sec2str(mDownTime));
