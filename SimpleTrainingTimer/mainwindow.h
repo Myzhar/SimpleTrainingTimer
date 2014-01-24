@@ -44,12 +44,16 @@ private:
     quint16 mDownRepetitionResetVal;
     quint16 mDownCycles;
 
+    quint32 mElapsed;
+    quint32 mRemaining;
+
     quint32 mRoundDuration;
     quint32 mPauseDuration;
     quint32 mRelaxDuration;
 
     quint16 mRepetition;
     quint16 mCycles;
+
 
     quint16 mSignalTime;
 };

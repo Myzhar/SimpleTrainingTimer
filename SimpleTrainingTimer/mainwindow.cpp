@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QSound>
+#include <QLCDNumber>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -10,14 +11,42 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // >>>>> LCD Indicators
+    QPalette pal;
+
     ui->lcdNumber_round->setDigitCount( 8 );
     ui->lcdNumber_round->display("00:00:00");
+    ui->lcdNumber_round->setAutoFillBackground(true);
+    pal = ui->lcdNumber_round->palette();
+    pal.setColor( QPalette::Background, QColor( 180,180,230 ));
+    ui->lcdNumber_round->setPalette( pal );
 
     ui->lcdNumber_pause->setDigitCount( 8 );
     ui->lcdNumber_pause->display("00:00:00");
+    ui->lcdNumber_pause->setAutoFillBackground(true);
+    pal = ui->lcdNumber_pause->palette();
+    pal.setColor( QPalette::Background, QColor( 180,230,180 ));
+    ui->lcdNumber_pause->setPalette( pal );
 
     ui->lcdNumber_relax->setDigitCount( 8 );
     ui->lcdNumber_relax->display("00:00:00");
+    ui->lcdNumber_relax->setAutoFillBackground(true);
+    pal = ui->lcdNumber_relax->palette();
+    pal.setColor( QPalette::Background, QColor( 230,180,180 ));
+    ui->lcdNumber_relax->setPalette( pal );
+
+    ui->lcdNumber_elapsed->setDigitCount( 8 );
+    ui->lcdNumber_elapsed->display("00:00:00");
+    ui->lcdNumber_elapsed->setAutoFillBackground(true);
+    pal = ui->lcdNumber_elapsed->palette();
+    pal.setColor( QPalette::Background, QColor( 230,230,180 ));
+    ui->lcdNumber_elapsed->setPalette( pal );
+
+    ui->lcdNumber_remaining->setDigitCount( 8 );
+    ui->lcdNumber_remaining->display("00:00:00");
+    ui->lcdNumber_remaining->setAutoFillBackground(true);
+    pal = ui->lcdNumber_remaining->palette();
+    pal.setColor( QPalette::Background, QColor( 230,180,230 ));
+    ui->lcdNumber_remaining->setPalette( pal );
     // <<<<< LCD Indicators
 
     // Initial status
@@ -33,13 +62,13 @@ MainWindow::MainWindow(QWidget *parent) :
              this, SLOT(onUpdateTimerTimeout()) );
     // <<<<< Timers
 
-    mRoundDuration = 15;
-    mPauseDuration = 5;
-    mRelaxDuration = 10;
+    mRoundDuration = 30;
+    mPauseDuration = 15;
+    mRelaxDuration = 20;
 
     mSignalTime = 10;
 
-    mRepetition = 2;
+    mRepetition = 3;
     mCycles = 2;
 
     ResetTimer();
@@ -98,12 +127,18 @@ void MainWindow::on_pushButton_reset_clicked()
 
 void MainWindow::ResetTimer()
 {
+    mRemaining = (( (mRoundDuration*mRepetition) + (mPauseDuration*(mRepetition-1)) ) * mCycles) + ( mRelaxDuration*(mCycles-1) );
+    mElapsed = 0;
+
     ui->lcdNumber_round->display(sec2str(mRoundDuration));
     ui->lcdNumber_pause->display(sec2str(mPauseDuration));
     ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
 
-    ui->spinBox_repetitions->setValue( mRepetition );
-    ui->spinBox_cycles->setValue( mCycles );
+    ui->lcdNumber_repetitions->display( mRepetition );
+    ui->lcdNumber_cycles->display( mCycles );
+
+    ui->lcdNumber_elapsed->display(sec2str(0));
+    ui->lcdNumber_remaining->display(sec2str(mRemaining));
 
     if( mUpdateTimer.isActive() ) // Pause
     {
@@ -119,12 +154,16 @@ void MainWindow::ResetTimer()
 void MainWindow::onUpdateTimerTimeout()
 {
     mDownTime--;
+    mElapsed++;
+    mRemaining--;
+
+    ui->lcdNumber_elapsed->display(sec2str(mElapsed));
+    ui->lcdNumber_remaining->display(sec2str(mRemaining));
 
     if( mDownTime==mSignalTime )
     {
         QSound::play(":/Sounds/Signal.wav");
     }
-
 
     qDebug() << Q_FUNC_INFO << tr("Update - DownTime val: %1").arg(mDownTime);
 
@@ -134,26 +173,31 @@ void MainWindow::onUpdateTimerTimeout()
     {
         if(mDownTime==0)
         {
-            if( mDownCycles==0 ) // Stop
+
+            if( mDownRepetition==1 )
             {
-                on_pushButton_reset_clicked();
-                QSound::play(":/Sounds/3x_Whistle.wav");
-            }
+                if( mDownCycles==1 ) // Stop
+                {
+                    on_pushButton_reset_clicked();
+                    QSound::play(":/Sounds/3x_Whistle.wav");
+                }
+                else
+                {
+                    mDownCycles--;
+                    ui->lcdNumber_cycles->display(mDownCycles);
 
-            if( mDownRepetition==0 )
-            {
-                mDownCycles--;
+                    mStatus = relax;
+                    QSound::play(":/Sounds/Bell.wav");
 
-                mStatus = relax;
-                QSound::play(":/Sounds/Bell.wav");
-
-                mDownTime = mRelaxDuration;
-                ui->lcdNumber_round->display(sec2str(mRoundDuration));
-                ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
+                    mDownTime = mRelaxDuration;
+                    ui->lcdNumber_round->display(sec2str(mRoundDuration));
+                    ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
+                }
             }
             else
             {
                 mDownRepetition--;
+                ui->lcdNumber_repetitions->display(mDownRepetition);
 
                 mStatus = pause;
                 QSound::play(":/Sounds/Whistle.wav");
@@ -197,6 +241,7 @@ void MainWindow::onUpdateTimerTimeout()
             mDownTime = mRoundDuration;
             ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
             ui->lcdNumber_round->display(sec2str(mDownTime));
+            ui->lcdNumber_repetitions->display(mRepetition);
         }
         else
             ui->lcdNumber_relax->display(sec2str(mDownTime));
