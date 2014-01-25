@@ -14,12 +14,17 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    qtimecomposingwidget.cpp
+    qtimecomposingwidget.cpp \
+    qtimechangedlg.cpp \
+    qclicklcdnumber.cpp
 
 HEADERS  += mainwindow.h \
-    qtimecomposingwidget.h
+    qtimecomposingwidget.h \
+    qtimechangedlg.h \
+    qclicklcdnumber.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    qtimechangedlg.ui
 
 CONFIG += mobility
 MOBILITY = 

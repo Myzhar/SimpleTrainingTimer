@@ -4,6 +4,7 @@
 #include <QSound>
 #include <QLCDNumber>
 #include "qtimecomposingwidget.h"
+#include "qtimechangedlg.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -48,6 +49,13 @@ MainWindow::MainWindow(QWidget *parent) :
     pal = ui->lcdNumber_remaining->palette();
     pal.setColor( QPalette::Background, QColor( 230,180,230 ));
     ui->lcdNumber_remaining->setPalette( pal );
+
+    connect(ui->lcdNumber_round, SIGNAL(clicked()),
+            this, SLOT(onLcdRoundClicked()) );
+    connect(ui->lcdNumber_pause, SIGNAL(clicked()),
+            this, SLOT(onLcdPauseClicked()) );
+    connect(ui->lcdNumber_relax, SIGNAL(clicked()),
+            this, SLOT(onLcdRelaxClicked()) );
     // <<<<< LCD Indicators
 
     // Initial status
@@ -196,6 +204,7 @@ void MainWindow::onUpdateTimerTimeout()
     {
     case round:
     {
+
         if(mDownTime==0)
         {
 
@@ -276,6 +285,36 @@ void MainWindow::onUpdateTimerTimeout()
         break;
     }
     }
+}
+
+void MainWindow::onLcdRoundClicked()
+{
+    QTimeChangeDlg dlg( mRoundDuration, this );
+    dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+    int res = dlg.exec();
+
+    if( res == QDialog::Accepted )
+        mRoundDuration = dlg.getTotSeconds();
+}
+
+void MainWindow::onLcdPauseClicked()
+{
+    QTimeChangeDlg dlg( mPauseDuration, this );
+    dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+    int res = dlg.exec();
+
+    if( res == QDialog::Accepted )
+        mPauseDuration = dlg.getTotSeconds();
+}
+
+void MainWindow::onLcdRelaxClicked()
+{
+    QTimeChangeDlg dlg( mRelaxDuration, this );
+    dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+    int res = dlg.exec();
+
+    if( res == QDialog::Accepted )
+        mRelaxDuration = dlg.getTotSeconds();
 }
 
 

@@ -32,6 +32,10 @@ private slots:
 
     void onUpdateTimerTimeout();
 
+    void onLcdRoundClicked();
+    void onLcdPauseClicked();
+    void onLcdRelaxClicked();
+
 private:
     Ui::MainWindow *ui;
 

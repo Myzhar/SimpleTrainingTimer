@@ -37,7 +37,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label_round">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -47,7 +47,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -76,7 +76,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_round">
+       <widget class="QClickLCDNumber" name="lcdNumber_round">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -111,7 +111,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="label_elapsed">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -121,7 +121,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -185,7 +185,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="label_repetitions">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -195,7 +195,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -224,7 +224,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_repetitions">
+       <widget class="QClickLCDNumber" name="lcdNumber_repetitions">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -259,7 +259,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label_cycles">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -269,7 +269,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -298,7 +298,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_cycles">
+       <widget class="QClickLCDNumber" name="lcdNumber_cycles">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -330,7 +330,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="label_remaining">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -340,7 +340,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -404,7 +404,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="label_relax">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -414,7 +414,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -443,7 +443,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_relax">
+       <widget class="QClickLCDNumber" name="lcdNumber_relax">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -483,7 +483,7 @@
       <property name="sizeHint" stdset="0">
        <size>
         <width>30</width>
-        <height>20</height>
+        <height>10</height>
        </size>
       </property>
      </spacer>
@@ -494,7 +494,7 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="label_pause">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -504,7 +504,7 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>0</height>
+          <height>25</height>
          </size>
         </property>
         <property name="font">
@@ -533,7 +533,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLCDNumber" name="lcdNumber_pause">
+       <widget class="QClickLCDNumber" name="lcdNumber_pause">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
@@ -573,7 +573,7 @@
       <property name="minimumSize">
        <size>
         <width>40</width>
-        <height>0</height>
+        <height>70</height>
        </size>
       </property>
      </widget>
@@ -596,7 +596,9 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>16</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
         </property>
         <property name="text">
@@ -620,7 +622,9 @@
         </property>
         <property name="font">
          <font>
-          <pointsize>14</pointsize>
+          <pointsize>16</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
         </property>
         <property name="text">
@@ -632,10 +636,16 @@
     </item>
     <item row="0" column="0" rowspan="8">
      <widget class="QTimeComposingWidget" name="widget_time_indicator_sx" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>40</width>
-        <height>0</height>
+        <height>70</height>
        </size>
       </property>
      </widget>
@@ -690,6 +700,11 @@
    <extends>QWidget</extends>
    <header>qtimecomposingwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QClickLCDNumber</class>
+   <extends>QLCDNumber</extends>
+   <header>qclicklcdnumber.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
