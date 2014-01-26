@@ -104,6 +104,8 @@ void QTimeComposingWidget::setTimingParams( int roundDuration, int pauseDuration
 
     //mTotTime = (( (mRoundDuration*mRepetition) + (mPauseDuration*(mRepetition-1)) ) * mCycles) + ( mRelaxDuration*(mCycles-1) );
     mTotTime = ( (mRoundDuration*mRepetition) + (mPauseDuration*(mRepetition-1)) ) + mRelaxDuration;
+
+    update();
 }
 
 void QTimeComposingWidget::setTimePosition( int currentTime )
