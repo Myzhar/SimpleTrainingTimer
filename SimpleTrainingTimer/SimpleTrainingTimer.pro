@@ -16,15 +16,18 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     qtimecomposingwidget.cpp \
     qtimechangedlg.cpp \
-    qclicklcdnumber.cpp
+    qclicklcdnumber.cpp \
+    qrepetchangedlg.cpp
 
 HEADERS  += mainwindow.h \
     qtimecomposingwidget.h \
     qtimechangedlg.h \
-    qclicklcdnumber.h
+    qclicklcdnumber.h \
+    qrepetchangedlg.h
 
 FORMS    += mainwindow.ui \
-    qtimechangedlg.ui
+    qtimechangedlg.ui \
+    qrepetchangedlg.ui
 
 CONFIG += mobility
 MOBILITY = 

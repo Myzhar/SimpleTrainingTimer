@@ -23,8 +23,10 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
-    QString sec2str( quint32 sec );
+    QString sec2str( int sec );
     void ResetTimer();
+
+    void updateGui();
 
 private slots:
     void on_pushButton_start_pause_clicked();
@@ -36,6 +38,8 @@ private slots:
     void onLcdPauseClicked();
     void onLcdRelaxClicked();
 
+    void onLcdRepetCycClicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -43,25 +47,25 @@ private:
 
     QTimer mUpdateTimer;
 
-    quint32 mDownTime;
-    quint16 mDownRepetition;
-    quint16 mDownRepetitionResetVal;
-    quint16 mDownCycles;
+    int mDownTime;
+    int mDownRepetition;
+    int mDownRepetitionResetVal;
+    int mDownCycles;
 
-    quint32 mElapsed;
-    quint32 mRemaining;
+    int mElapsed;
+    int mRemaining;
 
-    quint32 mRepetTimer;
+    int mRepetTimer;
 
-    quint32 mRoundDuration;
-    quint32 mPauseDuration;
-    quint32 mRelaxDuration;
+    int mRoundDuration;
+    int mPauseDuration;
+    int mRelaxDuration;
 
-    quint16 mRepetition;
-    quint16 mCycles;
+    int mRepetitions;
+    int mCycles;
 
 
-    quint16 mSignalTime;
+    int mSignalTime;
 };
 
 #endif // MAINWINDOW_H

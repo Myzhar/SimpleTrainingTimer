@@ -5,6 +5,11 @@
 #include <QLCDNumber>
 #include "qtimecomposingwidget.h"
 #include "qtimechangedlg.h"
+#include "qrepetchangedlg.h"
+
+#define CHANGE_LAB_COLOR QColor( 120,120,210 )
+#define FIXED_LAB_COLOR QColor( 200,200,100 )
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -56,6 +61,45 @@ MainWindow::MainWindow(QWidget *parent) :
             this, SLOT(onLcdPauseClicked()) );
     connect(ui->lcdNumber_relax, SIGNAL(clicked()),
             this, SLOT(onLcdRelaxClicked()) );
+    connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
+            this, SLOT(onLcdRepetCycClicked()) );
+    connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
+            this, SLOT(onLcdRepetCycClicked()) );
+
+    ui->label_cycles->setAutoFillBackground(true);
+    pal = ui->label_cycles->palette();
+    pal.setColor( QPalette::Background, CHANGE_LAB_COLOR );
+    ui->label_cycles->setPalette( pal );
+
+    ui->label_pause->setAutoFillBackground(true);
+    pal = ui->label_pause->palette();
+    pal.setColor( QPalette::Background, CHANGE_LAB_COLOR );
+    ui->label_pause->setPalette( pal );
+
+    ui->label_relax->setAutoFillBackground(true);
+    pal = ui->label_relax->palette();
+    pal.setColor( QPalette::Background, CHANGE_LAB_COLOR );
+    ui->label_relax->setPalette( pal );
+
+    ui->label_repetitions->setAutoFillBackground(true);
+    pal = ui->label_repetitions->palette();
+    pal.setColor( QPalette::Background, CHANGE_LAB_COLOR );
+    ui->label_repetitions->setPalette( pal );
+
+    ui->label_round->setAutoFillBackground(true);
+    pal = ui->label_round->palette();
+    pal.setColor( QPalette::Background, CHANGE_LAB_COLOR );
+    ui->label_round->setPalette( pal );
+
+    ui->label_elapsed->setAutoFillBackground(true);
+    pal = ui->label_elapsed->palette();
+    pal.setColor( QPalette::Background, FIXED_LAB_COLOR );
+    ui->label_elapsed->setPalette( pal );
+
+    ui->label_remaining->setAutoFillBackground(true);
+    pal = ui->label_remaining->palette();
+    pal.setColor( QPalette::Background, FIXED_LAB_COLOR );
+    ui->label_remaining->setPalette( pal );
     // <<<<< LCD Indicators
 
     // Initial status
@@ -71,26 +115,16 @@ MainWindow::MainWindow(QWidget *parent) :
              this, SLOT(onUpdateTimerTimeout()) );
     // <<<<< Timers
 
-    mRoundDuration = 15;
-    mPauseDuration = 3;
-    mRelaxDuration = 6;
+    mRoundDuration = 30;
+    mPauseDuration = 15;
+    mRelaxDuration = 60;
 
     mSignalTime = 10;
 
-    mRepetition = 5;
-    mCycles = 10;
+    mRepetitions = 10;
+    mCycles = 3;
 
-    ui->widget_time_indicator_dx->setTimingParams( mRoundDuration,
-                                                mPauseDuration,
-                                                mRelaxDuration,
-                                                mRepetition,
-                                                mCycles );
-
-    ui->widget_time_indicator_sx->setTimingParams( mRoundDuration,
-                                                mPauseDuration,
-                                                mRelaxDuration,
-                                                mRepetition,
-                                                mCycles );
+    updateGui();
 
     ui->widget_time_indicator_dx->setTimePosition( 0 );
     ui->widget_time_indicator_sx->setTimePosition( 0 );
@@ -121,18 +155,41 @@ void MainWindow::on_pushButton_start_pause_clicked()
     {
         mUpdateTimer.stop();
         ui->pushButton_start_pause->setText( tr("Start") );
+
+        connect(ui->lcdNumber_round, SIGNAL(clicked()),
+                this, SLOT(onLcdRoundClicked()) );
+        connect(ui->lcdNumber_pause, SIGNAL(clicked()),
+                this, SLOT(onLcdPauseClicked()) );
+        connect(ui->lcdNumber_relax, SIGNAL(clicked()),
+                this, SLOT(onLcdRelaxClicked()) );
+        connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
+                this, SLOT(onLcdRepetCycClicked()) );
+        connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
+                this, SLOT(onLcdRepetCycClicked()) );
     }
     else // Start
     {
+        mRepetTimer=0;
         mUpdateTimer.start();
         ui->pushButton_start_pause->setText( tr("Pause") );
         mDownRepetitionResetVal = mDownRepetition;
 
         QSound::play(":/Sounds/Whistle_high.wav");
+
+        disconnect(ui->lcdNumber_round, SIGNAL(clicked()),
+                this, SLOT(onLcdRoundClicked()) );
+        disconnect(ui->lcdNumber_pause, SIGNAL(clicked()),
+                this, SLOT(onLcdPauseClicked()) );
+        disconnect(ui->lcdNumber_relax, SIGNAL(clicked()),
+                this, SLOT(onLcdRelaxClicked()) );
+        disconnect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
+                this, SLOT(onLcdRepetCycClicked()) );
+        disconnect(ui->lcdNumber_cycles, SIGNAL(clicked()),
+                this, SLOT(onLcdRepetCycClicked()) );
     }
 }
 
-QString MainWindow::sec2str( quint32 sec )
+QString MainWindow::sec2str( int sec )
 {
     QTime startTime(0,0,0);
     QTime time;
@@ -151,14 +208,14 @@ void MainWindow::on_pushButton_reset_clicked()
 
 void MainWindow::ResetTimer()
 {
-    mRemaining = (( (mRoundDuration*mRepetition) + (mPauseDuration*(mRepetition-1)) ) * mCycles) + ( mRelaxDuration*(mCycles-1) );
+    mRemaining = (( (mRoundDuration*mRepetitions) + (mPauseDuration*(mRepetitions-1)) ) * mCycles) + ( mRelaxDuration*(mCycles-1) );
     mElapsed = 0;
 
     ui->lcdNumber_round->display(sec2str(mRoundDuration));
     ui->lcdNumber_pause->display(sec2str(mPauseDuration));
     ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
 
-    ui->lcdNumber_repetitions->display( mRepetition );
+    ui->lcdNumber_repetitions->display( mRepetitions );
     ui->lcdNumber_cycles->display( mCycles );
 
     ui->lcdNumber_elapsed->display(sec2str(0));
@@ -174,8 +231,19 @@ void MainWindow::ResetTimer()
     }
 
     mDownTime = mRoundDuration;
-    mDownRepetition = mRepetition;
+    mDownRepetition = mRepetitions;
     mDownCycles = mCycles;
+
+    connect(ui->lcdNumber_round, SIGNAL(clicked()),
+            this, SLOT(onLcdRoundClicked()) );
+    connect(ui->lcdNumber_pause, SIGNAL(clicked()),
+            this, SLOT(onLcdPauseClicked()) );
+    connect(ui->lcdNumber_relax, SIGNAL(clicked()),
+            this, SLOT(onLcdRelaxClicked()) );
+    connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
+            this, SLOT(onLcdRepetCycClicked()) );
+    connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
+            this, SLOT(onLcdRepetCycClicked()) );
 }
 
 void MainWindow::onUpdateTimerTimeout()
@@ -192,13 +260,12 @@ void MainWindow::onUpdateTimerTimeout()
     ui->widget_time_indicator_dx->setTimePosition( mRepetTimer );
     ui->widget_time_indicator_sx->setTimePosition( mRepetTimer );
 
-
     if( mDownTime==mSignalTime )
     {
         QSound::play(":/Sounds/Signal.wav");
     }
 
-    qDebug() << Q_FUNC_INFO << tr("Update - DownTime val: %1").arg(mDownTime);
+    //qDebug() << Q_FUNC_INFO << tr("Update - DownTime val: %1").arg(mDownTime);
 
     switch(mStatus)
     {
@@ -275,7 +342,7 @@ void MainWindow::onUpdateTimerTimeout()
             mDownTime = mRoundDuration;
             ui->lcdNumber_relax->display(sec2str(mRelaxDuration));
             ui->lcdNumber_round->display(sec2str(mDownTime));
-            ui->lcdNumber_repetitions->display(mRepetition);
+            ui->lcdNumber_repetitions->display(mRepetitions);
 
             mRepetTimer=0;
         }
@@ -287,6 +354,24 @@ void MainWindow::onUpdateTimerTimeout()
     }
 }
 
+void MainWindow::updateGui()
+{
+    ui->widget_time_indicator_dx->setTimingParams( mRoundDuration,
+                                                   mPauseDuration,
+                                                   mRelaxDuration,
+                                                   mRepetitions,
+                                                   mCycles );
+
+    ui->widget_time_indicator_sx->setTimingParams( mRoundDuration,
+                                                   mPauseDuration,
+                                                   mRelaxDuration,
+                                                   mRepetitions,
+                                                   mCycles );
+
+    mRemaining = (( (mRoundDuration*mRepetitions) + (mPauseDuration*(mRepetitions-1)) ) * mCycles) + ( mRelaxDuration*(mCycles-1) );
+    ui->lcdNumber_remaining->display( sec2str(mRemaining) );
+}
+
 void MainWindow::onLcdRoundClicked()
 {
     QTimeChangeDlg dlg( mRoundDuration, this );
@@ -294,7 +379,12 @@ void MainWindow::onLcdRoundClicked()
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
+    {
         mRoundDuration = dlg.getTotSeconds();
+        ui->lcdNumber_round->display( sec2str(mRoundDuration));
+
+        updateGui();
+    }
 }
 
 void MainWindow::onLcdPauseClicked()
@@ -304,7 +394,12 @@ void MainWindow::onLcdPauseClicked()
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
+    {
         mPauseDuration = dlg.getTotSeconds();
+        ui->lcdNumber_pause->display( sec2str(mPauseDuration));
+
+        updateGui();
+    }
 }
 
 void MainWindow::onLcdRelaxClicked()
@@ -314,7 +409,28 @@ void MainWindow::onLcdRelaxClicked()
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
+    {
         mRelaxDuration = dlg.getTotSeconds();
+        ui->lcdNumber_relax->display( sec2str(mRelaxDuration));
+
+        updateGui();
+    }
 }
 
+void MainWindow::onLcdRepetCycClicked()
+{
+    QRepetChangeDlg dlg( mRepetitions, mCycles, this );
+    dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+    int res = dlg.exec();
+
+    if( res == QDialog::Accepted )
+    {
+        dlg.getValues( mRepetitions, mCycles );
+
+        ui->lcdNumber_repetitions->display( mRepetitions );
+        ui->lcdNumber_cycles->display( mCycles );
+
+        updateGui();
+    }
+}
 

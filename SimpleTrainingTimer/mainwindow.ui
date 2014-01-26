@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Simple Training Timer</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/Images/timer_android.png</normaloff>:/Images/timer_android.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="5" column="1">
@@ -66,6 +70,9 @@
         </property>
         <property name="text">
          <string>Exercise/Round</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -141,6 +148,9 @@
         <property name="text">
          <string>Elapsed</string>
         </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
@@ -215,6 +225,9 @@
         <property name="text">
          <string>Repetitions count</string>
         </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
@@ -231,6 +244,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
         <property name="frameShape">
          <enum>QFrame::Panel</enum>
         </property>
@@ -241,7 +259,7 @@
          <bool>false</bool>
         </property>
         <property name="digitCount">
-         <number>8</number>
+         <number>2</number>
         </property>
         <property name="segmentStyle">
          <enum>QLCDNumber::Flat</enum>
@@ -289,6 +307,9 @@
         <property name="text">
          <string>Cycles count</string>
         </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
@@ -305,6 +326,11 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <pointsize>8</pointsize>
+         </font>
+        </property>
         <property name="frameShape">
          <enum>QFrame::Panel</enum>
         </property>
@@ -315,7 +341,7 @@
          <bool>false</bool>
         </property>
         <property name="digitCount">
-         <number>8</number>
+         <number>2</number>
         </property>
         <property name="segmentStyle">
          <enum>QLCDNumber::Flat</enum>
@@ -359,6 +385,9 @@
         </property>
         <property name="text">
          <string>Remaining</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -433,6 +462,9 @@
         </property>
         <property name="text">
          <string>Cycle Relax</string>
+        </property>
+        <property name="scaledContents">
+         <bool>true</bool>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -524,6 +556,9 @@
         <property name="text">
          <string>Pause</string>
         </property>
+        <property name="scaledContents">
+         <bool>true</bool>
+        </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
@@ -583,7 +618,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_start_pause">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -609,7 +644,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_reset">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -707,6 +742,8 @@
    <header>qclicklcdnumber.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

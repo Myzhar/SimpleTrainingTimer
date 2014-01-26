@@ -17,7 +17,6 @@ QTimeChangeDlg::QTimeChangeDlg(int totSec, QWidget *parent) :
              this, SLOT(accept()));
     connect( ui->pushButton_cancel, SIGNAL(clicked()),
              this, SLOT(reject()));
-
 }
 
 QTimeChangeDlg::~QTimeChangeDlg()
@@ -51,5 +50,51 @@ void QTimeChangeDlg::sec2time( int sec )
     mSeconds = sec % 60;
 }
 
+void QTimeChangeDlg::on_pushButton_hh_plus_clicked()
+{
+    mHours++;
+    mHours=(mHours%60);
+
+    ui->lcdNumber_hours->display(mHours);
+}
+
+void QTimeChangeDlg::on_pushButton_hh_minus_clicked()
+{
+    mHours--;
+    mHours = mHours==-1?59:mHours;
+
+    ui->lcdNumber_hours->display(mHours);
+}
 
 
+void QTimeChangeDlg::on_pushButton_mm_plus_clicked()
+{
+    mMinutes++;
+    mMinutes=(mMinutes%60);
+
+    ui->lcdNumber_minutes->display(mMinutes);
+}
+
+void QTimeChangeDlg::on_pushButton_mm_minus_clicked()
+{
+    mMinutes--;
+    mMinutes = mMinutes==-1?59:mMinutes;
+
+    ui->lcdNumber_minutes->display(mMinutes);
+}
+
+void QTimeChangeDlg::on_pushButton_ss_plus_clicked()
+{
+    mSeconds++;
+    mSeconds=(mSeconds%60);
+
+    ui->lcdNumber_seconds->display(mSeconds);
+}
+
+void QTimeChangeDlg::on_pushButton_ss_minus_clicked()
+{
+    mSeconds--;
+    mSeconds = mSeconds==-1?59:mSeconds;
+
+    ui->lcdNumber_seconds->display(mSeconds);
+}

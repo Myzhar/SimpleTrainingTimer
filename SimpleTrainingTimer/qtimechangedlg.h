@@ -25,6 +25,18 @@ protected:
 
 private slots:
 
+    void on_pushButton_hh_plus_clicked();
+
+    void on_pushButton_hh_minus_clicked();
+
+    void on_pushButton_mm_plus_clicked();
+
+    void on_pushButton_mm_minus_clicked();
+
+    void on_pushButton_ss_plus_clicked();
+
+    void on_pushButton_ss_minus_clicked();
+
 private:
     Ui::QTimeChangeDlg *ui;
 

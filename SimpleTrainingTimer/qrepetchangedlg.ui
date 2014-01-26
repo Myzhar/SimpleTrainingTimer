@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QTimeChangeDlg</class>
- <widget class="QWidget" name="QTimeChangeDlg">
+ <class>QRepetChangeDlg</class>
+ <widget class="QDialog" name="QRepetChangeDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>558</height>
+    <height>624</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_4">
+  <layout class="QVBoxLayout" name="verticalLayout_5">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <widget class="QLabel" name="label_hours">
+      <widget class="QLabel" name="label_repetitions">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -47,7 +47,7 @@
         <number>1</number>
        </property>
        <property name="text">
-        <string>Hours</string>
+        <string>Exercise/Round repetitions</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -58,9 +58,9 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
-        <widget class="QLCDNumber" name="lcdNumber_hours">
+        <widget class="QLCDNumber" name="lcdNumber_repetitions">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -85,7 +85,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_hh_plus">
+        <widget class="QPushButton" name="pushButton_rep_plus">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -106,7 +106,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_hh_minus">
+        <widget class="QPushButton" name="pushButton_rep_minus">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -131,9 +131,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
+    <layout class="QVBoxLayout" name="verticalLayout_6">
      <item>
-      <widget class="QLabel" name="label_hours_2">
+      <widget class="QLabel" name="label_cycles">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -163,7 +163,7 @@
         <number>1</number>
        </property>
        <property name="text">
-        <string>Minutes</string>
+        <string>Cycles count</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -174,9 +174,9 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
        <item>
-        <widget class="QLCDNumber" name="lcdNumber_minutes">
+        <widget class="QLCDNumber" name="lcdNumber_cycles">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -201,7 +201,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_mm_plus">
+        <widget class="QPushButton" name="pushButton_cyc_plus">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -222,123 +222,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton_mm_minus">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>24</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <kerning>true</kerning>
-          </font>
-         </property>
-         <property name="text">
-          <string>-</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QLabel" name="label_hours_3">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Raised</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="text">
-        <string>Seconds</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
-       </property>
-       <property name="wordWrap">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLCDNumber" name="lcdNumber_seconds">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Panel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <property name="smallDecimalPoint">
-          <bool>false</bool>
-         </property>
-         <property name="digitCount">
-          <number>2</number>
-         </property>
-         <property name="segmentStyle">
-          <enum>QLCDNumber::Flat</enum>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_ss_plus">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>24</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <kerning>true</kerning>
-          </font>
-         </property>
-         <property name="text">
-          <string>+</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButton_ss_minus">
+        <widget class="QPushButton" name="pushButton_cyc_minus">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
@@ -370,15 +254,15 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>113</height>
+       <height>144</height>
       </size>
      </property>
     </spacer>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
-      <widget class="QPushButton" name="pushButton_ok">
+      <widget class="QPushButton" name="pushButton_ok_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
@@ -404,7 +288,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_cancel">
+      <widget class="QPushButton" name="pushButton_cancel_2">
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
