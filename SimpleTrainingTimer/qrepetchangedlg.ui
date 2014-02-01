@@ -318,5 +318,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_ok_2</sender>
+   <signal>released()</signal>
+   <receiver>QRepetChangeDlg</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>45</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_cancel_2</sender>
+   <signal>released()</signal>
+   <receiver>QRepetChangeDlg</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>331</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>364</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

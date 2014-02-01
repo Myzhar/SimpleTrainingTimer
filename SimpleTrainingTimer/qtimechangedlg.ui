@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>QTimeChangeDlg</class>
- <widget class="QWidget" name="QTimeChangeDlg">
+ <widget class="QDialog" name="QTimeChangeDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -434,5 +434,38 @@
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_ok</sender>
+   <signal>released()</signal>
+   <receiver>QTimeChangeDlg</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>493</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>57</x>
+     <y>399</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_cancel</sender>
+   <signal>released()</signal>
+   <receiver>QTimeChangeDlg</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>359</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>345</x>
+     <y>384</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

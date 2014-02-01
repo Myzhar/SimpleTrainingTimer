@@ -6,6 +6,7 @@
 #include "qtimecomposingwidget.h"
 #include "qtimechangedlg.h"
 #include "qrepetchangedlg.h"
+#include "qscreentools.h"
 
 #define CHANGE_LAB_COLOR QColor( 120,120,210 )
 #define FIXED_LAB_COLOR QColor( 200,200,100 )
@@ -16,6 +17,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    mSignalConnected=false;
+    mPaused=false;
 
     // >>>>> LCD Indicators
     QPalette pal;
@@ -54,17 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
     pal = ui->lcdNumber_remaining->palette();
     pal.setColor( QPalette::Background, QColor( 230,180,230 ));
     ui->lcdNumber_remaining->setPalette( pal );
-
-    connect(ui->lcdNumber_round, SIGNAL(clicked()),
-            this, SLOT(onLcdRoundClicked()) );
-    connect(ui->lcdNumber_pause, SIGNAL(clicked()),
-            this, SLOT(onLcdPauseClicked()) );
-    connect(ui->lcdNumber_relax, SIGNAL(clicked()),
-            this, SLOT(onLcdRelaxClicked()) );
-    connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
-            this, SLOT(onLcdRepetCycClicked()) );
-    connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
-            this, SLOT(onLcdRepetCycClicked()) );
 
     ui->label_cycles->setAutoFillBackground(true);
     pal = ui->label_cycles->palette();
@@ -126,8 +119,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     updateGui();
 
+    // >>>>> Time indicators
+
+
     ui->widget_time_indicator_dx->setTimePosition( 0 );
     ui->widget_time_indicator_sx->setTimePosition( 0 );
+    // <<<<< Time indicators
+
+    connectSignals( true );
 
     ResetTimer();
 }
@@ -135,6 +134,34 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::resizeEvent(QResizeEvent * ev)
+{
+    QMainWindow::resizeEvent( ev );
+
+    QScreenTools screen;
+
+    int fontPx = screen.cvtMm2Px( 3 );
+    QFont font = this->font();
+    font.setPixelSize( fontPx );
+    this->setFont( font );
+    ui->label_cycles->setFont( font );
+    ui->label_elapsed->setFont( font );
+    ui->label_pause->setFont( font );
+    ui->label_relax->setFont( font );
+    ui->label_remaining->setFont( font );
+    ui->label_repetitions->setFont( font );
+    ui->label_round->setFont( font );
+
+    fontPx = screen.cvtMm2Px( 8 );
+    font.setPixelSize( fontPx);
+    ui->pushButton_start_pause->setFont( font );
+    ui->pushButton_reset->setFont( font );
+
+
+    ui->widget_time_indicator_dx->setMinimumWidth( this->width()/6 );
+    ui->widget_time_indicator_sx->setMinimumWidth( this->width()/6 );
 }
 
 void MainWindow::changeEvent(QEvent *e)
@@ -154,38 +181,34 @@ void MainWindow::on_pushButton_start_pause_clicked()
     if( mUpdateTimer.isActive() ) // Pause
     {
         mUpdateTimer.stop();
-        ui->pushButton_start_pause->setText( tr("Start") );
+        ui->pushButton_start_pause->setText( tr("Continue") );
 
-        connect(ui->lcdNumber_round, SIGNAL(clicked()),
-                this, SLOT(onLcdRoundClicked()) );
-        connect(ui->lcdNumber_pause, SIGNAL(clicked()),
-                this, SLOT(onLcdPauseClicked()) );
-        connect(ui->lcdNumber_relax, SIGNAL(clicked()),
-                this, SLOT(onLcdRelaxClicked()) );
-        connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
-                this, SLOT(onLcdRepetCycClicked()) );
-        connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
-                this, SLOT(onLcdRepetCycClicked()) );
+        mPaused = true;
+
+        //connectSignals( true );
     }
-    else // Start
+    else
     {
-        mRepetTimer=0;
-        mUpdateTimer.start();
-        ui->pushButton_start_pause->setText( tr("Pause") );
-        mDownRepetitionResetVal = mDownRepetition;
+        if(!mPaused)// Start
+        {
+            mPaused = false;
+            mRepetTimer=0;
+            mUpdateTimer.start();
+            ui->pushButton_start_pause->setText( tr("Pause") );
+            mDownRepetitionResetVal = mDownRepetition;
 
-        QSound::play(":/Sounds/Whistle_high.wav");
+            QSound::play(":/Sounds/Whistle_high.wav");
 
-        disconnect(ui->lcdNumber_round, SIGNAL(clicked()),
-                this, SLOT(onLcdRoundClicked()) );
-        disconnect(ui->lcdNumber_pause, SIGNAL(clicked()),
-                this, SLOT(onLcdPauseClicked()) );
-        disconnect(ui->lcdNumber_relax, SIGNAL(clicked()),
-                this, SLOT(onLcdRelaxClicked()) );
-        disconnect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
-                this, SLOT(onLcdRepetCycClicked()) );
-        disconnect(ui->lcdNumber_cycles, SIGNAL(clicked()),
-                this, SLOT(onLcdRepetCycClicked()) );
+            connectSignals( false );
+        }
+        else
+        {
+            mPaused = false;
+            mUpdateTimer.start();
+            ui->pushButton_start_pause->setText( tr("Pause") );
+
+            QSound::play(":/Sounds/Whistle_high.wav");
+        }
     }
 }
 
@@ -210,6 +233,7 @@ void MainWindow::ResetTimer()
 {
     mRemaining = (( (mRoundDuration*mRepetitions) + (mPauseDuration*(mRepetitions-1)) ) * mCycles) + ( mRelaxDuration*(mCycles-1) );
     mElapsed = 0;
+    mPaused = false;
 
     ui->lcdNumber_round->display(sec2str(mRoundDuration));
     ui->lcdNumber_pause->display(sec2str(mPauseDuration));
@@ -234,16 +258,42 @@ void MainWindow::ResetTimer()
     mDownRepetition = mRepetitions;
     mDownCycles = mCycles;
 
-    connect(ui->lcdNumber_round, SIGNAL(clicked()),
-            this, SLOT(onLcdRoundClicked()) );
-    connect(ui->lcdNumber_pause, SIGNAL(clicked()),
-            this, SLOT(onLcdPauseClicked()) );
-    connect(ui->lcdNumber_relax, SIGNAL(clicked()),
-            this, SLOT(onLcdRelaxClicked()) );
-    connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
-            this, SLOT(onLcdRepetCycClicked()) );
-    connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
-            this, SLOT(onLcdRepetCycClicked()) );
+    connectSignals( true );
+}
+
+void MainWindow::connectSignals( bool connectState )
+{
+    if( connectState && !mSignalConnected )
+    {
+        connect(ui->lcdNumber_round, SIGNAL(clicked()),
+                this, SLOT(onLcdRoundClicked()) );
+        connect(ui->lcdNumber_pause, SIGNAL(clicked()),
+                this, SLOT(onLcdPauseClicked()) );
+        connect(ui->lcdNumber_relax, SIGNAL(clicked()),
+                this, SLOT(onLcdRelaxClicked()) );
+        connect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
+                this, SLOT(onLcdRepetCycClicked()) );
+        connect(ui->lcdNumber_cycles, SIGNAL(clicked()),
+                this, SLOT(onLcdRepetCycClicked()) );
+
+        mSignalConnected = true;
+    }
+
+    if( !connectState && mSignalConnected )
+    {
+        disconnect(ui->lcdNumber_round, SIGNAL(clicked()),
+                   this, SLOT(onLcdRoundClicked()) );
+        disconnect(ui->lcdNumber_pause, SIGNAL(clicked()),
+                   this, SLOT(onLcdPauseClicked()) );
+        disconnect(ui->lcdNumber_relax, SIGNAL(clicked()),
+                   this, SLOT(onLcdRelaxClicked()) );
+        disconnect(ui->lcdNumber_repetitions, SIGNAL(clicked()),
+                   this, SLOT(onLcdRepetCycClicked()) );
+        disconnect(ui->lcdNumber_cycles, SIGNAL(clicked()),
+                   this, SLOT(onLcdRepetCycClicked()) );
+
+        mSignalConnected = false;
+    }
 }
 
 void MainWindow::onUpdateTimerTimeout()
@@ -271,10 +321,8 @@ void MainWindow::onUpdateTimerTimeout()
     {
     case round:
     {
-
         if(mDownTime==0)
         {
-
             if( mDownRepetition==1 )
             {
                 if( mDownCycles==1 ) // Stop

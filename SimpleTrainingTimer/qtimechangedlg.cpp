@@ -13,10 +13,10 @@ QTimeChangeDlg::QTimeChangeDlg(int totSec, QWidget *parent) :
     ui->lcdNumber_minutes->display( mMinutes );
     ui->lcdNumber_seconds->display( mSeconds );
 
-    connect( ui->pushButton_ok, SIGNAL(clicked()),
+    /*connect( ui->pushButton_ok, SIGNAL(clicked()),
              this, SLOT(accept()));
     connect( ui->pushButton_cancel, SIGNAL(clicked()),
-             this, SLOT(reject()));
+             this, SLOT(reject()));*/
 }
 
 QTimeChangeDlg::~QTimeChangeDlg()

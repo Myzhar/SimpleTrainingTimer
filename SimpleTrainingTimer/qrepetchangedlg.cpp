@@ -7,10 +7,10 @@ QRepetChangeDlg::QRepetChangeDlg(int nRepetitions, int nCycles, QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect( ui->pushButton_ok_2, SIGNAL(clicked()),
+    /*connect( ui->pushButton_ok_2, SIGNAL(clicked()),
              this, SLOT(accept()));
     connect( ui->pushButton_cancel_2, SIGNAL(clicked()),
-             this, SLOT(reject()));
+             this, SLOT(reject()));*/
 
     mRepetitions = nRepetitions;
     mCycles = nCycles;
@@ -27,7 +27,8 @@ QRepetChangeDlg::~QRepetChangeDlg()
 void QRepetChangeDlg::changeEvent(QEvent *e)
 {
     QDialog::changeEvent(e);
-    switch (e->type()) {
+    switch (e->type())
+    {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
         break;

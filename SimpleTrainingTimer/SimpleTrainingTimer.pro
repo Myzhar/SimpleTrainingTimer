@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     qtimecomposingwidget.cpp \
     qtimechangedlg.cpp \
     qclicklcdnumber.cpp \
-    qrepetchangedlg.cpp
+    qrepetchangedlg.cpp \
+    qscreentools.cpp
 
 HEADERS  += mainwindow.h \
     qtimecomposingwidget.h \
     qtimechangedlg.h \
     qclicklcdnumber.h \
-    qrepetchangedlg.h
+    qrepetchangedlg.h \
+    qscreentools.h
 
 FORMS    += mainwindow.ui \
     qtimechangedlg.ui \

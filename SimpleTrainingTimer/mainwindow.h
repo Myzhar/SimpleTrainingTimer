@@ -21,12 +21,15 @@ public:
     ~MainWindow();
 
 protected:
+    virtual void resizeEvent(QResizeEvent * ev) Q_DECL_OVERRIDE;
     void changeEvent(QEvent *e);
 
     QString sec2str( int sec );
     void ResetTimer();
 
     void updateGui();
+
+    void connectSignals(bool connectState );
 
 private slots:
     void on_pushButton_start_pause_clicked();
@@ -46,6 +49,9 @@ private:
     Status mStatus;
 
     QTimer mUpdateTimer;
+
+    bool mSignalConnected;
+    bool mPaused;
 
     int mDownTime;
     int mDownRepetition;
