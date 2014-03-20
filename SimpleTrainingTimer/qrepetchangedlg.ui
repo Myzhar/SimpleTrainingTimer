@@ -103,6 +103,9 @@
          <property name="text">
           <string>+</string>
          </property>
+         <property name="autoRepeat">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -123,6 +126,9 @@
          </property>
          <property name="text">
           <string>-</string>
+         </property>
+         <property name="autoRepeat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -219,6 +225,9 @@
          <property name="text">
           <string>+</string>
          </property>
+         <property name="autoRepeat">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
        <item>
@@ -239,6 +248,9 @@
          </property>
          <property name="text">
           <string>-</string>
+         </property>
+         <property name="autoRepeat">
+          <bool>true</bool>
          </property>
         </widget>
        </item>

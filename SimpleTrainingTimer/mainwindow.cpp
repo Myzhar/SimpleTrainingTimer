@@ -22,8 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // >>>>> INI
 #ifndef ANDROID
-    iniPath = QApplication::applicationDirPath();
-    iniPath += tr("%1.ini").arg(QApplication::applicationName());
+    mIniPath = QApplication::applicationDirPath();
+    mIniPath += tr("%1.ini").arg(QApplication::applicationName());
 #else
     // under Android it is not possible to write in the binary folder. We must store our "ini" file in a new folder under /sdcard/
     mIniPath = tr("/sdcard/%1/").arg(INI_FOLDER);
