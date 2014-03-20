@@ -6,6 +6,7 @@
 #define ROUND_COLOR QColor( 180,180,230 )
 #define PAUSE_COLOR QColor( 180,230,180 )
 #define RELAX_COLOR QColor( 230,80,80 )
+#define OVERPAINT_COLOR QColor( 100,100,100,150 )
 
 class QTimeComposingWidget : public QWidget
 {

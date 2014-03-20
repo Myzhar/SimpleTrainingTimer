@@ -136,14 +136,8 @@ MainWindow::MainWindow(QWidget *parent) :
              this, SLOT(onUpdateTimerTimeout()) );
     // <<<<< Timers
 
-    //mRoundDuration = 30;
-    //mPauseDuration = 15;
-    //mRelaxDuration = 60;
 
     mSignalTime = 10;
-
-    //mRepetitions = 10;
-    //mCycles = 3;
 
     updateGui();
 
@@ -186,6 +180,8 @@ void MainWindow::resizeEvent(QResizeEvent * ev)
     font.setPixelSize( fontPx);
     ui->pushButton_start_pause->setFont( font );
     ui->pushButton_reset->setFont( font );
+    ui->pushButton_start_pause->setIconSize( QSize( fontPx,fontPx ));
+    ui->pushButton_reset->setIconSize( QSize( fontPx,fontPx));
 
 
     ui->widget_time_indicator_dx->setMinimumWidth( this->width()/6 );
@@ -209,7 +205,8 @@ void MainWindow::on_pushButton_start_pause_clicked()
     if( mUpdateTimer.isActive() ) // Pause
     {
         mUpdateTimer.stop();
-        ui->pushButton_start_pause->setText( tr("Continue") );
+        ui->pushButton_start_pause->setText( tr("Resume") );
+        ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-play-icon.png" ) );
 
         mPaused = true;
 
@@ -223,6 +220,7 @@ void MainWindow::on_pushButton_start_pause_clicked()
             mRepetTimer=0;
             mUpdateTimer.start();
             ui->pushButton_start_pause->setText( tr("Pause") );
+            ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-pause-icon.png" ) );
             mDownRepetitionResetVal = mDownRepetition;
 
             QSound::play(":/Sounds/Whistle_high.wav");
@@ -234,6 +232,7 @@ void MainWindow::on_pushButton_start_pause_clicked()
             mPaused = false;
             mUpdateTimer.start();
             ui->pushButton_start_pause->setText( tr("Pause") );
+            ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-pause-icon.png" ) );
 
             QSound::play(":/Sounds/Whistle_high.wav");
         }
@@ -280,6 +279,7 @@ void MainWindow::ResetTimer()
     {
         mUpdateTimer.stop();
         ui->pushButton_start_pause->setText( tr("Start") );
+        ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-play-icon.png" ) );
     }
 
     mDownTime = mRoundDuration;

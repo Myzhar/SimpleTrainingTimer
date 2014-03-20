@@ -32,38 +32,8 @@ void QTimeComposingWidget::paintEvent( QPaintEvent* event )
     int pauseH = (int)((scaleFact*(double)mPauseDuration)/*+0.5*/);
     int relaxH = (int)((scaleFact*(double)mRelaxDuration)/*+0.5*/);
 
-    /*int widgetH = height();
-    int totH = (( (roundH*mRepetition) + (pauseH*(mRepetition-1)) ) * mCycles) + ( relaxH*(mCycles-1) );*/
-
     int relaxPos=0;
     //int startPos=0;
-
-    /*for( int c=0; c<mCycles; c++ )
-    {
-        for( int i=0; i<mRepetition; i++ )
-        {
-            painter.setBrush( roundBrush );
-            painter.drawRect( 0, startPos+i*(roundH+pauseH-1), this->width()-1, roundH );
-            relaxPos+=(roundH);
-        }
-
-        for( int i=0; i<mRepetition-1; i++ )
-        {
-            painter.setBrush( pauseBrush );
-            painter.drawRect( 0, startPos+roundH+i*(roundH+pauseH-1), this->width()-1, pauseH );
-            relaxPos+=(pauseH);
-        }
-
-        if( c!=mCycles-1) // Last relax interval must not be rendered
-        {
-            painter.setBrush( relaxBrush );
-            painter.drawRect( 0, relaxPos, this->width()-1, relaxH );
-
-            startPos = relaxPos;
-            startPos += (relaxH);
-            relaxPos = startPos;
-        }
-    }*/
 
     for( int i=0; i<mRepetition; i++ )
     {
@@ -88,7 +58,10 @@ void QTimeComposingWidget::paintEvent( QPaintEvent* event )
     int timeIndicatorPos = (int)(((double)(this->height()-2)/((double)mTotTime)*(double)mCurrTime)+0.5);
 
     painter.setPen( timeIndicatorPen );
+    painter.setBrush( OVERPAINT_COLOR );
     painter.drawLine( 1, timeIndicatorPos, this->width()-2, timeIndicatorPos );
+    painter.setPen( Qt::NoPen );
+    painter.drawRect(0,0,this->width()-1, timeIndicatorPos );
 }
 
 void QTimeComposingWidget::setTimingParams( int roundDuration, int pauseDuration,

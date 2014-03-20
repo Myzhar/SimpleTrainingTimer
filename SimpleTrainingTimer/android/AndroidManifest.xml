@@ -32,7 +32,11 @@
         </activity>
     </application>
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="14"/>
+<<<<<<< HEAD
     <supports-screens android:anyDensity="true" android:smallScreens="true" android:normalScreens="true" android:largeScreens="true"/>
+=======
+    <supports-screens android:smallScreens="true" android:largeScreens="true" android:normalScreens="true" android:anyDensity="true"/>
+>>>>>>> Last modifications
     <!-- %%INSERT_PERMISSIONS -->
     <!-- %%INSERT_FEATURES -->
     <uses-permission android:name="android.permission.INTERNET"/>

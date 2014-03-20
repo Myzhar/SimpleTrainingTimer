@@ -6,5 +6,8 @@
         <file>Sounds/3x_Whistle.wav</file>
         <file>Sounds/Bell.wav</file>
         <file>Images/timer_android.png</file>
+        <file>Images/Actions-player-pause-icon.png</file>
+        <file>Images/Actions-player-play-icon.png</file>
+        <file>Images/Actions-player-stop-icon.png</file>
     </qresource>
 </RCC>
