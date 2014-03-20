@@ -5,6 +5,9 @@
 #include <QTimer>
 #include <QTime>
 #include <QMediaPlayer>
+#include <QSettings>
+
+#define INI_FOLDER "SimpleTrainingTimer"
 
 namespace Ui {
 class MainWindow;
@@ -28,6 +31,7 @@ protected:
     void ResetTimer();
 
     void updateGui();
+    void updateIni();
 
     void connectSignals(bool connectState );
 
@@ -70,8 +74,11 @@ private:
     int mRepetitions;
     int mCycles;
 
-
     int mSignalTime;
+
+    QString mIniPath;
+
+    QSettings* mIniSettings;
 };
 
 #endif // MAINWINDOW_H

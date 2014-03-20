@@ -36,7 +36,7 @@ void QTimeComposingWidget::paintEvent( QPaintEvent* event )
     int totH = (( (roundH*mRepetition) + (pauseH*(mRepetition-1)) ) * mCycles) + ( relaxH*(mCycles-1) );*/
 
     int relaxPos=0;
-    int startPos=0;
+    //int startPos=0;
 
     /*for( int c=0; c<mCycles; c++ )
     {

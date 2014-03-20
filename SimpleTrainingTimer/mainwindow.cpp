@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QSound>
 #include <QLCDNumber>
+#include <QDir>
 #include "qtimecomposingwidget.h"
 #include "qtimechangedlg.h"
 #include "qrepetchangedlg.h"
@@ -14,9 +15,36 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    mIniSettings(NULL)
 {
     ui->setupUi(this);
+
+    // >>>>> INI
+#ifndef ANDROID
+    iniPath = QApplication::applicationDirPath();
+    iniPath += tr("%1.ini").arg(QApplication::applicationName());
+#else
+    // under Android it is not possible to write in the binary folder. We must store our "ini" file in a new folder under /sdcard/
+    mIniPath = tr("/sdcard/%1/").arg(INI_FOLDER);
+    QDir dir(mIniPath);
+    if( !dir.exists() )
+    {
+        dir.mkdir(mIniPath);
+    }
+    mIniPath += tr("%1.ini").arg(INI_FOLDER);
+#endif
+
+    mIniSettings = new QSettings( mIniPath, QSettings::IniFormat, this );
+
+    mRoundDuration = mIniSettings->value( "mRoundDuration", 60).toInt();
+    mPauseDuration = mIniSettings->value( "mPauseDuration", 30).toInt();
+    mRelaxDuration = mIniSettings->value( "mRelaxDuration", 120).toInt();
+    mRepetitions = mIniSettings->value( "mRepetitions", 3).toInt();
+    mCycles = mIniSettings->value( "mCycles", 5).toInt();
+
+    updateIni();
+    // <<<<< INI
 
     mSignalConnected=false;
     mPaused=false;
@@ -108,14 +136,14 @@ MainWindow::MainWindow(QWidget *parent) :
              this, SLOT(onUpdateTimerTimeout()) );
     // <<<<< Timers
 
-    mRoundDuration = 30;
-    mPauseDuration = 15;
-    mRelaxDuration = 60;
+    //mRoundDuration = 30;
+    //mPauseDuration = 15;
+    //mRelaxDuration = 60;
 
     mSignalTime = 10;
 
-    mRepetitions = 10;
-    mCycles = 3;
+    //mRepetitions = 10;
+    //mCycles = 3;
 
     updateGui();
 
@@ -402,6 +430,18 @@ void MainWindow::onUpdateTimerTimeout()
     }
 }
 
+void MainWindow::updateIni()
+{
+   mIniSettings->setValue( "mRoundDuration", mRoundDuration );
+   mIniSettings->setValue( "mPauseDuration", mPauseDuration );
+   mIniSettings->setValue( "mRelaxDuration", mRelaxDuration );
+
+   mIniSettings->setValue( "mRepetitions", mRepetitions );
+   mIniSettings->setValue( "mCycles", mCycles );
+
+   mIniSettings->sync();
+}
+
 void MainWindow::updateGui()
 {
     ui->widget_time_indicator_dx->setTimingParams( mRoundDuration,
@@ -432,6 +472,7 @@ void MainWindow::onLcdRoundClicked()
         ui->lcdNumber_round->display( sec2str(mRoundDuration));
 
         updateGui();
+        updateIni();
     }
 }
 
@@ -447,6 +488,7 @@ void MainWindow::onLcdPauseClicked()
         ui->lcdNumber_pause->display( sec2str(mPauseDuration));
 
         updateGui();
+        updateIni();
     }
 }
 
@@ -462,6 +504,7 @@ void MainWindow::onLcdRelaxClicked()
         ui->lcdNumber_relax->display( sec2str(mRelaxDuration));
 
         updateGui();
+        updateIni();
     }
 }
 
@@ -479,6 +522,7 @@ void MainWindow::onLcdRepetCycClicked()
         ui->lcdNumber_cycles->display( mCycles );
 
         updateGui();
+        updateIni();
     }
 }
 
