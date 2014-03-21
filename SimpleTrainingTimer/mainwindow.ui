@@ -644,9 +644,9 @@
     <item row="10" column="0" colspan="4">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_start_pause">
+       <widget class="QToolButton" name="toolButton_start_pause">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -660,8 +660,8 @@
         <property name="font">
          <font>
           <pointsize>16</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
@@ -680,12 +680,18 @@
           <height>64</height>
          </size>
         </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
+        </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_reset">
+       <widget class="QToolButton" name="toolButton_reset">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -699,8 +705,8 @@
         <property name="font">
          <font>
           <pointsize>16</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <bold>false</bold>
          </font>
         </property>
         <property name="styleSheet">
@@ -718,6 +724,12 @@
           <width>64</width>
           <height>64</height>
          </size>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextUnderIcon</enum>
+        </property>
+        <property name="arrowType">
+         <enum>Qt::NoArrow</enum>
         </property>
        </widget>
       </item>
@@ -760,8 +772,7 @@
     <property name="title">
      <string>About</string>
     </property>
-    <addaction name="action_Help"/>
-    <addaction name="action_About"/>
+    <addaction name="action_Information"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuAbout"/>
@@ -771,14 +782,9 @@
     <string>&amp;Exit</string>
    </property>
   </action>
-  <action name="action_Help">
+  <action name="action_Information">
    <property name="text">
-    <string>&amp;Help</string>
-   </property>
-  </action>
-  <action name="action_About">
-   <property name="text">
-    <string>&amp;About</string>
+    <string>&amp;Information</string>
    </property>
   </action>
  </widget>

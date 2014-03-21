@@ -13,9 +13,7 @@ class QTimeChangeDlg : public QDialog
 
 public:
 
-    // TODO: add Dialog Label
-
-    explicit QTimeChangeDlg(int totSec, QWidget *parent = 0);
+    explicit QTimeChangeDlg(QString title, int totSec, QWidget *parent = 0);
     ~QTimeChangeDlg();
 
     int getTotSeconds();
@@ -43,6 +41,8 @@ private:
     int mHours;
     int mMinutes;
     int mSeconds;
+
+    QString mTitle;
 };
 
 #endif // QTIMECHANGEDLG_H

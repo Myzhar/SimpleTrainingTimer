@@ -1,13 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "objectsizes.h"
 #include <QDebug>
 #include <QSound>
 #include <QLCDNumber>
 #include <QDir>
+#include <QMessageBox>
 #include "qtimecomposingwidget.h"
 #include "qtimechangedlg.h"
-#include "qrepetchangedlg.h"
+#include "qrepeatchangedlg.h"
 #include "qscreentools.h"
+#include "qinformationdlg.h"
 
 #define CHANGE_LAB_COLOR QColor( 120,120,210 )
 #define FIXED_LAB_COLOR QColor( 200,200,100 )
@@ -164,10 +167,10 @@ void MainWindow::resizeEvent(QResizeEvent * ev)
 
     QScreenTools screen;
 
-    int fontPx = screen.cvtMm2Px( 3 );
+    int fontPx = screen.cvtMm2Px( LABEL_FIELD_TITLE_MM );
     QFont font = this->font();
     font.setPixelSize( fontPx );
-    this->setFont( font );
+
     ui->label_cycles->setFont( font );
     ui->label_elapsed->setFont( font );
     ui->label_pause->setFont( font );
@@ -176,12 +179,12 @@ void MainWindow::resizeEvent(QResizeEvent * ev)
     ui->label_repetitions->setFont( font );
     ui->label_round->setFont( font );
 
-    fontPx = screen.cvtMm2Px( 8 );
+    fontPx = screen.cvtMm2Px( LABEL_PUSHBUTTON_MM );
     font.setPixelSize( fontPx);
-    ui->pushButton_start_pause->setFont( font );
-    ui->pushButton_reset->setFont( font );
-    ui->pushButton_start_pause->setIconSize( QSize( fontPx,fontPx ));
-    ui->pushButton_reset->setIconSize( QSize( fontPx,fontPx));
+    ui->toolButton_start_pause->setFont( font );
+    ui->toolButton_reset->setFont( font );
+    ui->toolButton_start_pause->setIconSize( QSize( fontPx,fontPx ));
+    ui->toolButton_reset->setIconSize( QSize( fontPx,fontPx));
 
 
     ui->widget_time_indicator_dx->setMinimumWidth( this->width()/6 );
@@ -200,13 +203,13 @@ void MainWindow::changeEvent(QEvent *e)
     }
 }
 
-void MainWindow::on_pushButton_start_pause_clicked()
+void MainWindow::on_toolButton_start_pause_clicked()
 {
     if( mUpdateTimer.isActive() ) // Pause
     {
         mUpdateTimer.stop();
-        ui->pushButton_start_pause->setText( tr("Resume") );
-        ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-play-icon.png" ) );
+        ui->toolButton_start_pause->setText( tr("Resume") );
+        ui->toolButton_start_pause->setIcon( QIcon( "://Images/Actions-player-play-icon.png" ) );
 
         mPaused = true;
 
@@ -219,8 +222,8 @@ void MainWindow::on_pushButton_start_pause_clicked()
             mPaused = false;
             mRepetTimer=0;
             mUpdateTimer.start();
-            ui->pushButton_start_pause->setText( tr("Pause") );
-            ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-pause-icon.png" ) );
+            ui->toolButton_start_pause->setText( tr("Pause") );
+            ui->toolButton_start_pause->setIcon( QIcon( "://Images/Actions-player-pause-icon.png" ) );
             mDownRepetitionResetVal = mDownRepetition;
 
             QSound::play(":/Sounds/Whistle_high.wav");
@@ -231,8 +234,8 @@ void MainWindow::on_pushButton_start_pause_clicked()
         {
             mPaused = false;
             mUpdateTimer.start();
-            ui->pushButton_start_pause->setText( tr("Pause") );
-            ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-pause-icon.png" ) );
+            ui->toolButton_start_pause->setText( tr("Pause") );
+            ui->toolButton_start_pause->setIcon( QIcon( "://Images/Actions-player-pause-icon.png" ) );
 
             QSound::play(":/Sounds/Whistle_high.wav");
         }
@@ -251,7 +254,7 @@ QString MainWindow::sec2str( int sec )
     return timeStr;
 }
 
-void MainWindow::on_pushButton_reset_clicked()
+void MainWindow::on_toolButton_reset_clicked()
 {
     ResetTimer();
 }
@@ -278,8 +281,7 @@ void MainWindow::ResetTimer()
     if( mUpdateTimer.isActive() ) // Pause
     {
         mUpdateTimer.stop();
-        ui->pushButton_start_pause->setText( tr("Start") );
-        ui->pushButton_start_pause->setIcon( QIcon( "://Images/Actions-player-play-icon.png" ) );
+        ui->toolButton_start_pause->setIcon( QIcon( "://Images/Actions-player-play-icon.png" ) );
     }
 
     mDownTime = mRoundDuration;
@@ -287,6 +289,8 @@ void MainWindow::ResetTimer()
     mDownCycles = mCycles;
 
     connectSignals( true );
+
+    ui->toolButton_start_pause->setText( tr("Start") );
 }
 
 void MainWindow::connectSignals( bool connectState )
@@ -355,7 +359,7 @@ void MainWindow::onUpdateTimerTimeout()
             {
                 if( mDownCycles==1 ) // Stop
                 {
-                    on_pushButton_reset_clicked();
+                    on_toolButton_reset_clicked();
                     QSound::play(":/Sounds/3x_Whistle.wav");
                 }
                 else
@@ -432,14 +436,14 @@ void MainWindow::onUpdateTimerTimeout()
 
 void MainWindow::updateIni()
 {
-   mIniSettings->setValue( "mRoundDuration", mRoundDuration );
-   mIniSettings->setValue( "mPauseDuration", mPauseDuration );
-   mIniSettings->setValue( "mRelaxDuration", mRelaxDuration );
+    mIniSettings->setValue( "mRoundDuration", mRoundDuration );
+    mIniSettings->setValue( "mPauseDuration", mPauseDuration );
+    mIniSettings->setValue( "mRelaxDuration", mRelaxDuration );
 
-   mIniSettings->setValue( "mRepetitions", mRepetitions );
-   mIniSettings->setValue( "mCycles", mCycles );
+    mIniSettings->setValue( "mRepetitions", mRepetitions );
+    mIniSettings->setValue( "mCycles", mCycles );
 
-   mIniSettings->sync();
+    mIniSettings->sync();
 }
 
 void MainWindow::updateGui()
@@ -462,8 +466,10 @@ void MainWindow::updateGui()
 
 void MainWindow::onLcdRoundClicked()
 {
-    QTimeChangeDlg dlg( mRoundDuration, this );
+    QTimeChangeDlg dlg( tr("Exercise/Round"), mRoundDuration, this );
+#ifdef ANDROID
     dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+#endif
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
@@ -478,8 +484,10 @@ void MainWindow::onLcdRoundClicked()
 
 void MainWindow::onLcdPauseClicked()
 {
-    QTimeChangeDlg dlg( mPauseDuration, this );
+    QTimeChangeDlg dlg( tr("Exercise Pause"), mPauseDuration, this );
+#ifdef ANDROID
     dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+#endif
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
@@ -494,8 +502,10 @@ void MainWindow::onLcdPauseClicked()
 
 void MainWindow::onLcdRelaxClicked()
 {
-    QTimeChangeDlg dlg( mRelaxDuration, this );
+    QTimeChangeDlg dlg( tr("Cycle Relax"), mRelaxDuration, this );
+#ifdef ANDROID
     dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+#endif
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
@@ -510,8 +520,10 @@ void MainWindow::onLcdRelaxClicked()
 
 void MainWindow::onLcdRepetCycClicked()
 {
-    QRepetChangeDlg dlg( mRepetitions, mCycles, this );
+    QRepeatChangeDlg dlg( tr("Repetitions"), mRepetitions, mCycles, this );
+#ifdef ANDROID
     dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+#endif
     int res = dlg.exec();
 
     if( res == QDialog::Accepted )
@@ -526,3 +538,11 @@ void MainWindow::onLcdRepetCycClicked()
     }
 }
 
+void MainWindow::on_action_Information_triggered()
+{
+    QInformationDlg dlg;
+#ifdef ANDROID
+    dlg.setWindowState(dlg.windowState() | Qt::WindowMaximized);
+#endif
+    dlg.exec();
+}

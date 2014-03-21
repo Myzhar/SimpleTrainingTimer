@@ -36,16 +36,16 @@ protected:
     void connectSignals(bool connectState );
 
 private slots:
-    void on_pushButton_start_pause_clicked();
-    void on_pushButton_reset_clicked();
 
     void onUpdateTimerTimeout();
-
     void onLcdRoundClicked();
     void onLcdPauseClicked();
     void onLcdRelaxClicked();
-
     void onLcdRepetCycClicked();
+
+    void on_action_Information_triggered();
+    void on_toolButton_start_pause_clicked();
+    void on_toolButton_reset_clicked();
 
 private:
     Ui::MainWindow *ui;

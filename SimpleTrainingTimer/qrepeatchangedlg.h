@@ -7,18 +7,19 @@ namespace Ui {
 class QRepetChangeDlg;
 }
 
-class QRepetChangeDlg : public QDialog
+class QRepeatChangeDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit QRepetChangeDlg(int nRepetitions, int nCycles, QWidget *parent = 0);
-    ~QRepetChangeDlg();
+    explicit QRepeatChangeDlg(QString title, int nRepetitions, int nCycles, QWidget *parent = 0);
+    ~QRepeatChangeDlg();
 
     void getValues( int& nRepetitions, int& nCycles ){nRepetitions=mRepetitions;nCycles=mCycles;}
 
 protected:
     void changeEvent(QEvent *e);
+    void resizeEvent(QResizeEvent *ev) Q_DECL_OVERRIDE;
 
 private slots:
     void on_pushButton_rep_plus_clicked();
@@ -31,6 +32,8 @@ private:
 
     int mRepetitions;
     int mCycles;
+
+    QString mTitle;
 };
 
 #endif // QREPETCHANGEDLG_H

@@ -1,8 +1,9 @@
 #include "qtimechangedlg.h"
 #include "ui_qtimechangedlg.h"
 #include "qscreentools.h"
+#include "objectsizes.h"
 
-QTimeChangeDlg::QTimeChangeDlg(int totSec, QWidget *parent) :
+QTimeChangeDlg::QTimeChangeDlg(QString title, int totSec, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QTimeChangeDlg)
 {
@@ -14,10 +15,15 @@ QTimeChangeDlg::QTimeChangeDlg(int totSec, QWidget *parent) :
     ui->lcdNumber_minutes->display( mMinutes );
     ui->lcdNumber_seconds->display( mSeconds );
 
+    updateTimeStr();
+
     /*connect( ui->pushButton_ok, SIGNAL(clicked()),
              this, SLOT(accept()));
     connect( ui->pushButton_cancel, SIGNAL(clicked()),
              this, SLOT(reject()));*/
+
+    mTitle = title;
+    ui->label_title->setText(mTitle);
 }
 
 QTimeChangeDlg::~QTimeChangeDlg()
@@ -31,14 +37,14 @@ void QTimeChangeDlg::resizeEvent(QResizeEvent *ev)
 
     QScreenTools screen;
 
-    int fontPx = screen.cvtMm2Px( 3 );
+    int fontPx = screen.cvtMm2Px( LABEL_FIELD_TITLE_MM );
     QFont font = this->font();
     font.setPixelSize( fontPx );
     ui->label_hours->setFont(font);
     ui->label_minutes->setFont(font);
     ui->label_seconds->setFont(font);
 
-    fontPx = screen.cvtMm2Px( 8 );
+    fontPx = screen.cvtMm2Px( LABEL_PUSHBUTTON_MM );
     font.setPixelSize( fontPx );
     ui->pushButton_cancel->setFont( font );
     ui->pushButton_hh_minus->setFont( font );
@@ -49,12 +55,17 @@ void QTimeChangeDlg::resizeEvent(QResizeEvent *ev)
     ui->pushButton_ss_minus->setFont( font );
     ui->pushButton_ss_plus->setFont( font );
 
-    fontPx = screen.cvtMm2Px( 5 );
+    fontPx = screen.cvtMm2Px( DIALOG_TITLE_MM );
+    font.setPixelSize( fontPx );
+    ui->label_title->setFont( font );
+
+    fontPx = screen.cvtMm2Px( LABEL_FIELD_TITLE_MM );
     font.setPixelSize( fontPx );
     ui->label->setFont(font);
 
-    fontPx = screen.cvtMm2Px( 15 );
+    fontPx = screen.cvtMm2Px( LABEL_PUSHBUTTON_MM );
     font.setPixelSize( fontPx );
+    font.setWeight( QFont::Bold );
     ui->label_time->setFont( font );
 
 }
